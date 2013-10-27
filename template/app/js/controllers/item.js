@@ -1,47 +1,64 @@
-(function (register, dispatch) {
+(function (app, register, dispatch) {
 	'use strict';
 
     register('item', function (c) {
         c.events = {
             'change [type="checkbox"]': function (e) {
-                c.element.classList.toggle('completed', e.target.checked);
+                c.extras.completed = e.target.checked;
+
+                c.element.classList.toggle('completed', c.extras.completed);
+                app.model.put(c.db, c.extras);
+
                 dispatch('list:update');
             },
 
             'dblclick label': function () {
-                console.log('dbl click');
                 c.element.classList.add('editing');
             },
 
             'keypress .edit': function (e) {
                 if (e.which == 13) {
+                    c.extras.label = e.target.value;
+
                     c.element.classList.remove('editing');
-                    c.set('label', c.$$('.edit').value);
+                    c.set('label', c.extras.label);
+                    app.model.put(c.db, c.extras);
                 }
             },
 
             'click .destroy': function () {
+                app.model.del(c.db, c.extras.id);
                 c.remove();
                 dispatch('list:update');
             },
 
+            'list:setAll': function (e) {
+                var cl = c.element.classList,
+                    s  = e.detail;
 
-            'list:toggleAll': function () {
-                var cl = c.element.classList;
-                cl.toggle('completed');
-                c.$$('[type="checkbox"]').checked = cl.contains('completed');
+                cl.toggle('completed', s);
+                c.$$('[type="checkbox"]').checked = s;
+                app.model.put(c.db, c.extras);
             },
 
             'list:clearAll': function () {
-                var completed = c.element.classList.contains('completed');
-                if (completed)
+                if (c.extras.completed) {
+                    app.model.del(c.db, c.extras.id);
                     c.remove();
+                }
             }
         };
 
         c.render('item', c.extras);
+        c.element.classList.toggle(
+            'completed', c.extras.completed);
+        c.$$('[type="checkbox"]').checked = c.extras.completed;
+
     });
 
-})(window.morgen.register,
-   window.morgen.dispatch);
+})(
+    window.app,
+    window.morgen.register,
+    window.morgen.dispatch
+);
 

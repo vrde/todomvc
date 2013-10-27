@@ -1,11 +1,6 @@
-(function (run, load) {
+(function (ns) {
 	'use strict';
 
-    run({ watch: true });
+    ns.app = ns.app || {};
 
-    load('list', '#todoapp');
-
-})(
-    window.morgen.run,
-    window.morgen.load
-);
+}) (window);

@@ -1,1 +1,10 @@
 /* base.css overrides */
+
+.only-active .todo-item.completed {
+    display: none;
+}
+
+.only-completed .todo-item:not(.completed) {
+    display: none;
+}
+
