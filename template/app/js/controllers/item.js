@@ -33,11 +33,12 @@
             },
 
             'list:setAll': function (e) {
-                var cl = c.element.classList,
-                    s  = e.detail;
+                var cl = c.element.classList;
 
-                cl.toggle('completed', s);
-                c.$$('[type="checkbox"]').checked = s;
+                c.extras.completed = e.detail;
+
+                cl.toggle('completed', c.extras.completed);
+                c.$$('[type="checkbox"]').checked = c.extras.completed;
                 app.model.put(c.db, c.extras);
             },
 
@@ -50,8 +51,7 @@
         };
 
         c.render('item', c.extras);
-        c.element.classList.toggle(
-            'completed', c.extras.completed);
+        c.element.classList.toggle('completed', c.extras.completed);
         c.$$('[type="checkbox"]').checked = c.extras.completed;
 
     });

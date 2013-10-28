@@ -74,6 +74,8 @@
             }
         };
 
+        c.render('todo');
+
         app.model.all(c.db, all);
     });
 
