@@ -6,7 +6,7 @@
         var add = function (data) {
             var el = morgen.create('item', data).element;
 
-            c.$$('#todo-list').appendChild(el);
+            c.$('#todo-list').appendChild(el);
             morgen.dispatch('list:update');
         };
 
@@ -19,16 +19,16 @@
 
         c.routes = [
             ['/', function () {
-                c.$$('#todo-list').classList.remove('only-completed');
-                c.$$('#todo-list').classList.remove('only-active');
+                c.$('#todo-list').removeClass('only-completed');
+                c.$('#todo-list').removeClass('only-active');
             }],
             ['/active', function () {
-                c.$$('#todo-list').classList.remove('only-completed');
-                c.$$('#todo-list').classList.add('only-active');
+                c.$('#todo-list').removeClass('only-completed');
+                c.$('#todo-list').addClass('only-active');
             }],
             ['/completed', function () {
-                c.$$('#todo-list').classList.remove('only-active');
-                c.$$('#todo-list').classList.add('only-completed');
+                c.$('#todo-list').removeClass('only-active');
+                c.$('#todo-list').addClass('only-completed');
             }]
         ];
 
@@ -62,15 +62,15 @@
                 c.set('left', left);
                 c.set('completed', completed);
 
-                c.$$('#clear-completed').classList.toggle('hidden', !completed);
-                c.$$('#toggle-all').checked = !left;
+                c.$('#clear-completed').toggleClass('hidden', !completed);
+                c.$('#toggle-all').checked(!left);
             },
 
             'route': function (e) {
                 var href = e.detail.href;
 
-                c.$$('#filters .selected').classList.remove('selected');
-                c.$$('#filters a[href="' + href + '"]').classList.add('selected');
+                c.$('#filters .selected').removeClass('selected');
+                c.$('#filters a[href="' + href + '"]').addClass('selected');
             }
         };
 
